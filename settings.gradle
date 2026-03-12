@@ -1,0 +1,3 @@
+rootProject.name = 'foldable-aar'
+include ':foldable-library'
+include ':demo-app'

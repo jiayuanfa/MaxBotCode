@@ -1,0 +1,30 @@
+// Top-level build file
+buildscript {
+    ext.kotlin_version = '1.9.0'
+    ext.compile_sdk = 34
+    ext.min_sdk = 24
+    ext.target_sdk = 34
+    
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.1.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+// Publishing configuration for Maven Central
+ext {
+    PUBLISH_GROUP_ID = 'com.example'
+    PUBLISH_VERSION = '1.0.0'
+    PUBLISH_ARTIFACT_ID = 'foldable-library'
+}

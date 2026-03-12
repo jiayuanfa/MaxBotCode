@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Foldable Library</string>
+    <string name="foldable_device_detected">Foldable device detected</string>
+    <string name="device_flat">Device is fully opened</string>
+    <string name="device_half_opened">Device is half opened</string>
+    <string name="device_folded">Device is folded</string>
+</resources>

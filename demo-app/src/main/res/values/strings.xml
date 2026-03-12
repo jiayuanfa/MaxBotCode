@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Foldable Demo</string>
+    <string name="device_type_label">设备类型</string>
+    <string name="fold_state_label">折叠状态</string>
+    <string name="refresh">刷新状态</string>
+    <string name="layout_recommendations">布局建议</string>
+    <string name="detecting">检测中...</string>
+    <string name="hint_text">提示：此 Demo 用于检测折叠屏设备的折叠状态。\n请在折叠屏设备上测试以获得最佳效果。</string>
+</resources>
