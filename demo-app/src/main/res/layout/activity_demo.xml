@@ -12,47 +12,6 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <!-- 标题 -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="折叠屏设备检测 Demo"
-            android:textColor="@color/purple_500"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <!-- 版本选择按钮组 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="24dp">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnKotlinDemo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
-                android:text="Kotlin 版本"
-                android:textAllCaps="false"
-                android:backgroundTint="@color/purple_500"
-                app:icon="@android:drawable/ic_menu_send" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnJavaDemo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:text="Java 版本"
-                android:textAllCaps="false"
-                android:backgroundTint="@color/teal_700"
-                app:icon="@android:drawable/ic_menu_send" />
-
-        </LinearLayout>
-
         <!-- 设备类型卡片 -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
@@ -129,7 +88,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnRefresh"
@@ -152,6 +112,16 @@
                 app:icon="@android:drawable/ic_menu_info_details" />
 
         </LinearLayout>
+
+        <!-- 返回按钮 -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="返回主页面"
+            android:textAllCaps="false"
+            android:backgroundTint="@android:color/darker_gray"
+            app:icon="@android:drawable/ic_menu_revert" />
 
         <!-- 说明文字 -->
         <TextView

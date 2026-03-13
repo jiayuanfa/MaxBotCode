@@ -8,6 +8,9 @@
 - ✅ 获取折叠屏的折叠状态（展开/折叠/半折叠）
 - ✅ 监听折叠状态变化
 - ✅ 提供布局适配建议
+- ✅ 同时支持 Kotlin 和 Java 两种 API
+- ✅ Kotlin 版本提供 Flow 响应式接口
+- ✅ Java 版本提供回调式接口
 - ✅ 支持 Jetpack WindowManager
 - ✅ 兼容 Android 7.0+ (API 24+)
 
@@ -143,13 +146,17 @@ dependencies {
 
 ## 快速开始
 
-### 1. 初始化
+本库同时提供 Kotlin 和 Java 两种版本的 API，满足不同项目的需求。
+
+### Kotlin 版本使用
+
+#### 1. 初始化
 
 ```kotlin
 val foldableHelper = FoldableDeviceHelper.getInstance(context)
 ```
 
-### 2. 在 Activity 中监听折叠状态
+#### 2. 在 Activity 中监听折叠状态
 
 ```kotlin
 class MainActivity : AppCompatActivity() {
@@ -192,7 +199,7 @@ class MainActivity : AppCompatActivity() {
 }
 ```
 
-### 3. 使用布局帮助类
+#### 3. 使用布局帮助类
 
 ```kotlin
 val layoutHelper = FoldableLayoutHelper(activity)
@@ -208,9 +215,94 @@ if (recommendations.shouldUseTwoPane) {
 layoutHelper.positionViewAvoidingFold(myView, avoidFold = true)
 ```
 
+---
+
+### Java 版本使用
+
+#### 1. 初始化
+
+```java
+FoldableDeviceHelper foldableHelper = FoldableDeviceHelper.getInstance(context);
+```
+
+#### 2. 在 Activity 中监听折叠状态
+
+```java
+public class MainActivity extends AppCompatActivity implements FoldableDeviceHelper.FoldableStateListener {
+    
+    private FoldableDeviceHelper foldableHelper;
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        
+        foldableHelper = FoldableDeviceHelper.getInstance(this);
+        foldableHelper.addListener(this);
+    }
+    
+    @Override
+    public void onFoldableStateChanged(@NonNull FoldableState newState, 
+                                     @NonNull List<FoldingFeature> foldingFeatures, 
+                                     @Nullable Rect layoutBounds) {
+        switch (newState) {
+            case FLAT:
+                handleFlatMode();
+                break;
+            case HALF_OPENED:
+                handleHalfOpenedMode();
+                break;
+            case FOLDED:
+                handleFoldedMode();
+                break;
+            case UNKNOWN:
+                handleNormalMode();
+                break;
+        }
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        foldableHelper.startListening(this);
+    }
+    
+    @Override
+    protected void onPause() {
+        super.onPause();
+        foldableHelper.stopListening();
+    }
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        foldableHelper.removeListener(this);
+        foldableHelper.release();
+    }
+}
+```
+
+#### 3. 使用布局帮助类
+
+```java
+FoldableLayoutHelper layoutHelper = new FoldableLayoutHelper(activity);
+
+// 获取布局建议
+LayoutRecommendations recommendations = layoutHelper.getLayoutRecommendations();
+if (recommendations.shouldUseTwoPane()) {
+    // 使用双窗格布局
+    showTwoPaneLayout();
+}
+
+// 让视图避开折叠区域
+layoutHelper.positionViewAvoidingFold(myView, true);
+```
+
 ## API 文档
 
-### FoldableDeviceHelper
+### Kotlin API
+
+#### FoldableDeviceHelper
 
 | 方法 | 说明 |
 |------|------|
@@ -223,13 +315,67 @@ layoutHelper.positionViewAvoidingFold(myView, avoidFold = true)
 | `isFolded()` | 判断是否完全折叠 |
 | `isHalfOpened()` | 判断是否半开 |
 | `getFoldingBounds()` | 获取折叠区域边界 |
+| `foldableState: StateFlow<FoldableState>` | 折叠状态的可观察流 |
+| `foldingFeatures: StateFlow<List<FoldingFeature>>` | 折叠特征列表的可观察流 |
+| `layoutBounds: StateFlow<Rect?>` | 折叠区域边界的可观察流 |
 
-### FoldableState
+---
+
+### Java API
+
+#### FoldableDeviceHelper
+
+| 方法 | 说明 |
+|------|------|
+| `getInstance(context)` | 获取单例实例 |
+| `startListening(activity)` | 开始监听折叠状态变化 |
+| `stopListening()` | 停止监听 |
+| `release()` | 释放资源 |
+| `addListener(listener)` | 添加折叠状态变化监听器 |
+| `removeListener(listener)` | 移除折叠状态变化监听器 |
+| `isFoldableDevice()` | 判断是否为折叠屏设备 |
+| `isFlat()` | 判断是否完全展开 |
+| `isFolded()` | 判断是否完全折叠 |
+| `isHalfOpened()` | 判断是否半开 |
+| `getFoldingBounds()` | 获取折叠区域边界 |
+| `getCurrentState()` | 获取当前折叠状态 |
+| `getFoldingFeatures()` | 获取当前折叠特征列表 |
+
+#### FoldableStateListener 接口
+
+```java
+public interface FoldableStateListener {
+    void onFoldableStateChanged(@NonNull FoldableState newState, 
+                              @NonNull List<FoldingFeature> foldingFeatures, 
+                              @Nullable Rect layoutBounds);
+}
+```
+
+---
+
+### 公共 API
+
+#### FoldableState 枚举
 
 - `FLAT` - 完全展开
 - `HALF_OPENED` - 半开
 - `FOLDED` - 完全折叠
 - `UNKNOWN` - 未知/普通设备
+
+#### FoldableLayoutHelper
+
+Kotlin 和 Java 版本的 FoldableLayoutHelper 提供相同的功能接口：
+
+| 方法 | 说明 |
+|------|------|
+| `shouldSpanAcrossFold()` | 内容是否可以跨越折叠区域 |
+| `getFoldBounds()` | 获取折叠区域边界 |
+| `getFoldWidth()` | 获取折叠铰链宽度 |
+| `getFoldHeight()` | 获取折叠铰链高度 |
+| `positionViewAvoidingFold(view, avoidFold)` | 自动调整视图避开折叠区域 |
+| `getWindowInsets()` | 获取系统栏内边距 |
+| `getLayoutRecommendations()` | 获取完整的布局适配建议 |
+| `release()` | 释放资源 |
 
 ## 示例应用
 

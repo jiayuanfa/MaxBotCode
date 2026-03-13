@@ -5,20 +5,20 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import com.example.foldable.demo.databinding.ActivityMainBinding
+import com.example.foldable.demo.databinding.ActivityDemoBinding
 import com.example.foldable.FoldableDeviceHelper
 import com.example.foldable.FoldableLayoutHelper
 import com.example.foldable.FoldableState
 import kotlinx.coroutines.launch
 
 /**
- * Demo应用主界面
+ * Kotlin版本演示界面
  * 功能：演示折叠屏设备检测、状态监听、布局适配功能
  */
-class MainActivity : AppCompatActivity() {
+class KotlinDemoActivity : AppCompatActivity() {
 
     // ViewBinding实例，用于访问布局中的控件
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityDemoBinding
     // 折叠屏设备帮助类实例
     private lateinit var foldableHelper: FoldableDeviceHelper
     // 折叠屏布局帮助类实例
@@ -27,8 +27,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // 初始化ViewBinding
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityDemoBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // 设置标题
+        supportActionBar?.title = "Kotlin 版本演示"
 
         // 初始化折叠屏相关帮助类
         foldableHelper = FoldableDeviceHelper.getInstance(this)
@@ -56,6 +59,11 @@ class MainActivity : AppCompatActivity() {
         // 布局建议按钮点击事件
         binding.btnTestLayout.setOnClickListener {
             testLayoutRecommendations()
+        }
+
+        // 返回按钮
+        binding.btnBack.setOnClickListener {
+            finish()
         }
     }
 
